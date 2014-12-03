@@ -1,0 +1,228 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+using System.Data.SqlClient;
+
+public partial class User_Userhome : System.Web.UI.Page
+{
+    Base_class obj = new Base_class();
+    DataSet dss = new DataSet();
+   
+    SqlDataReader rd;
+    coding objct = new coding(); 
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (!IsPostBack)
+        {
+            inbox();
+           secure();
+            group_mail();
+        }
+
+    }
+    public void inbox()
+    {
+        dss = obj.show("select * from inbox where to1='manumon'and secure=0 and trash_status=0 and draft_status=0 ");
+        //session not set.
+        gvinbox.DataSource = dss;
+        gvinbox.DataBind();
+    }
+    public void secure()
+    {
+        DataSet ds1 = new DataSet();
+        ds1 = obj.show("select * from inbox where to1='manumon'and secure=0 and trash_status=0 and draft_status=0");
+        //select * from inbox where to1='manumon'and secure=1 and trash_status=0 and draft_status=0
+        gvsinbox.DataSource = ds1;
+        gvsinbox.DataBind();
+    }
+    public void group_mail()
+    {
+
+    }
+    protected void gvinbox_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        gvinbox.PageIndex = e.NewPageIndex;
+        inbox();
+    }
+    protected void gvsinbox_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        gvsinbox.PageIndex = e.NewPageIndex;
+        secure();
+    }
+    protected void gvginbox_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        gvginbox.PageIndex = e.NewPageIndex;
+        group_mail();
+    }
+    protected void Btmark_Click(object sender, EventArgs e)
+    {
+        foreach(GridViewRow op in gvinbox.Rows) 
+        {
+            ((CheckBox)op.FindControl("cbcheched")).Checked = true;
+        }
+    }
+    protected void Button2_Click(object sender, EventArgs e)
+    {
+        foreach (GridViewRow op in gvinbox.Rows)
+        {
+            ((CheckBox)op.FindControl("cbcheched")).Checked = false;
+        }
+    }
+    protected void Button3_Click(object sender, EventArgs e)
+    {
+        foreach(GridViewRow r in gvinbox.Rows)
+        {
+            if (((CheckBox)r.FindControl("cbcheched")).Checked == true)
+            {
+                string id = ((Label)r.FindControl("lblcheck")).Text;
+                bool b = obj.save("update inbox set trash_status=1 where msg_id='" + id + "'");
+            }
+        }
+        inbox();
+    }
+    protected void Button1_Click(object sender, EventArgs e)
+    {
+        foreach (GridViewRow op in gvinbox.Rows)
+        {
+            ((CheckBox)op.FindControl("CheckBox2")).Checked = true;
+        }
+    }
+    protected void Button5_Click(object sender, EventArgs e)
+    {
+        foreach (GridViewRow op in gvinbox.Rows)
+        {
+            ((CheckBox)op.FindControl("CheckBox2")).Checked = false;
+        }
+    }
+    protected void Button6_Click(object sender, EventArgs e)
+    {
+        foreach (GridViewRow r in gvsinbox.Rows)
+        {
+            if (((CheckBox)r.FindControl("CheckBox2")).Checked == true)
+            {
+                string id = ((Label)r.FindControl("lblck")).Text;
+               bool s=obj.save("update inbox set trash_status=1 where msg_id='" + id + "'");
+            }
+        }
+        secure();
+    }
+    protected void btmark6_Click(object sender, EventArgs e)
+    {
+        foreach (GridViewRow op in gvinbox.Rows)
+        {
+            ((CheckBox)op.FindControl("checked")).Checked = true;
+        }
+    }
+    protected void btunmark_Click(object sender, EventArgs e)
+    {
+        foreach (GridViewRow op in gvinbox.Rows)
+        {
+            ((CheckBox)op.FindControl("checked")).Checked = false;
+        }
+    }
+    protected void gvinbox_RowCommand(object sender, GridViewCommandEventArgs e)
+    {
+        
+        if(e.CommandName== "forward")
+        {
+            Session["F_msg_id"]=e.CommandArgument.ToString();
+                Response.Redirect("compose.aspx");
+        }
+        else if (e.CommandName == "replay")
+        {
+            Session["R_msg_id"] = e.CommandArgument.ToString();
+            Response.Redirect("compose.aspx");
+        }
+       
+    }
+
+
+    //protected void gvsinbox_RowCommand(object sender, GridViewCommandEventArgs e)
+    //{
+    //    //if (e.CommandName == "key")
+    //    //{
+    //    //    rd = obj.search("select master_key from secure s, registration r where s.s_id=r.reg_id and reg_id='2'" );
+    //    //    //session not set
+    //    //    if(rd.HasRows )
+    //    //    {
+    //    //        while(rd.Read())
+    //    //        {
+    //    //            Session["id1"]=rd[0].ToString();
+
+    //    //        }
+    //    //    }
+    //    //    string k="";
+    //    //    foreach (GridViewRow gr in gvsinbox.Rows)
+    //    //    {
+    //    //        TextBox tx = ((TextBox)gr.FindControl("txtkey"));
+    //    //         k= tx.Text;
+    //    //         if (k != "")
+    //    //         {
+    //    //             if (Session["id1"].ToString() == k)
+    //    //             {
+
+    //    //                 Panel p = ((Panel)gr.FindControl("Panel1"));
+    //    //                 p.Visible = true;
+    //    //                 break;
+
+    //    //             }
+    //    //             else
+    //    //             {
+    //    //                 msg("Security Key Not Matching.");
+    //    //             }
+                     
+    //    //         }
+    //    //    }
+    //    //    //string k = ((TextBox)gvsinbox.FindControl("txtkey")).Text;
+    //    //    //string key_e= objct.encrypt(k);
+           
+    //    //}
+    //}
+    public void msg(string str)
+    {
+        RegisterStartupScript("", "<script language=javascript >alert('" + str + "')</script>");
+    }
+    //protected void Button7_Click(object sender, EventArgs e)
+    //{
+
+    //    rd = obj.search("select master_key from secure s, registration r where s.s_id=r.reg_id and reg_id='2'");
+    //        //session not set
+    //        if(rd.HasRows )
+    //        {
+    //            while(rd.Read())
+    //            {
+    //                Session["id1"]=rd[0].ToString();
+
+    //            }
+    //        }
+    //        string k="";
+    //        rd.Close();
+    //        // TextBox tx = ((TextBox)gr.FindControl("txtkey"));
+    //    k=txtkey.Text;      
+    //    //k= tx.Text;
+    //    if (Session["id1"].ToString() == k)
+    //     {
+
+    //         Panelsecure.Visible = true;
+    //         DataSet ds1 = new DataSet();
+    //         ds1 = obj.show("select * from inbox");
+    //         //select * from inbox where to1='manumon'and secure=1 and trash_status=0 and draft_status=0
+    //         gvsinbox.DataSource = ds1;
+    //         gvsinbox.DataBind();
+
+    //     }
+    //                 else
+    //                 {
+    //                     msg("Security Key Not Matching.");
+    //                 }
+    //    //secure();     
+    //}
+    protected void Button7_Click(object sender, EventArgs e)
+    {
+
+    }
+}

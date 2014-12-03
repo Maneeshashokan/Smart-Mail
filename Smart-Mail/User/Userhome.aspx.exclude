@@ -1,0 +1,420 @@
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/User/User.master" AutoEventWireup="true" CodeFile="Userhome.aspx.cs" Inherits="User_Userhome" %>
+
+<%@ Register assembly="AjaxControlToolkit" namespace="AjaxControlToolkit" tagprefix="asp" %>
+
+<asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
+    <style type="text/css">
+        .style1
+        {
+            width: 100%;
+        }
+        .style2
+        {
+            width: 125px;
+            font-size: large;
+            font-weight: bold;
+        }
+        .style5
+        {
+            width: 279px;
+            font-size: large;
+        }
+        .style10
+        {
+            width: 279px;
+        }
+        .style12
+        {
+            width: 85px;
+            font-size: large;
+            font-weight: bold;
+        }
+        .style15
+        {
+            width: 11px;
+        }
+        .style16
+        {
+            width: 71px;
+        }
+        .style23
+        {
+            font-weight: bold;
+            font-size: large;
+            width: 293px;
+        }
+        .style20
+        {
+            width: 232px;
+        }
+        .style24
+        {
+            width: 293px;
+        }
+    </style>
+    </asp:Content>
+
+
+
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
+    <head>
+<link rel="Stylesheet" type="text/css" media="screen" href="css/home.css" />
+
+</head>
+<div id="Main_content">
+  <asp:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server">
+        </asp:ToolkitScriptManager>
+
+    <asp:Panel ID="Main_content_Panel" runat="server">
+        <asp:TabContainer ID="TabContainer1" runat="server" ActiveTabIndex="0" 
+            Height="3592px" Width="1037px" >
+            <asp:TabPanel ID="TabPanel1" runat="server" HeaderText="TabPanel1"><HeaderTemplate>Inbox</HeaderTemplate><ContentTemplate><asp:Panel ID="Panel_inbox" runat="server"><asp:GridView ID="gvinbox" runat="server" AutoGenerateColumns="False" 
+                        CellPadding="4" ForeColor="Black" GridLines="Horizontal" AllowPaging="True" 
+                        PageSize="13" BackColor="#CCCCFF" BorderColor="#000066" BorderStyle="Solid" 
+                            BorderWidth="3px" onpageindexchanging="gvinbox_PageIndexChanging" 
+                            onrowcommand="gvinbox_RowCommand"><Columns><asp:TemplateField><ItemTemplate><asp:CheckBox ID="cbcheched" runat="server" /><asp:Label ID="lblcheck" runat="server" Text='<%# Bind("msg_id") %>' 
+                                        Visible="False"></asp:Label></ItemTemplate></asp:TemplateField><asp:TemplateField><ItemTemplate><asp:Image ID="Image1" runat="server" ImageUrl='<%# Bind("imp_path") %>' /></ItemTemplate></asp:TemplateField><asp:BoundField DataField="frm" /><asp:TemplateField><ItemTemplate>
+                    <asp:LinkButton 
+                    ID="LinkButton1" runat="server" 
+                                        CommandArgument='<%# Bind("msg_id") %>' CommandName="subject" 
+                                        Text='<%# Eval("subject") %>' 
+                    ></asp:LinkButton><asp:ModalPopupExtender 
+                    ID="LinkButton1_ModalPopupExtender" runat="server" 
+                                        DynamicServicePath="" Enabled="True" PopupControlID="Panel1" 
+                                        TargetControlID="LinkButton1" 
+                    BackgroundCssClass="modalBackground " CancelControlID="imgclose"></asp:ModalPopupExtender><br /><asp:Panel 
+                    ID="Panel1" runat="server" Height="355px" ScrollBars="Auto" 
+                                        Width="761px" BackColor="#CDF8F8" BorderColor="#000066"><table class="style1"><tr><td 
+                            class="style12">From </td><td class="style2">:</td><td class="style10"><asp:Label ID="lblfrom" 
+                                runat="server" CssClass="style4" Text='<%# Bind("frm") %>'></asp:Label></td><td 
+                            class="style16">&#160;</td><td class="style15">&#160;</td><td><asp:Image ID="imgclose" 
+                            runat="server" ImageUrl="~/Images/cute_ball_stop.png" Width="28px" /></td></tr><tr><td 
+                                class="style12">Subject </td><td class="style2">:</td><td class="style10"><asp:Label ID="lblsub" 
+                                    runat="server" CssClass="style4" Text='<%# Bind("subject") %>'></asp:Label></td><td 
+                                class="style16">&#160;</td><td class="style15">&#160;</td><td>&#160;</td></tr><tr><td 
+                            class="style12">&#160;</td><td class="style2">&#160;</td><td class="style10">
+                            <asp:Label ID="Label2" runat="server" Text='<%# Eval("msg_id") %>' 
+                                Visible="False"></asp:Label>
+                            </td><td class="style16">&#160;</td><td 
+                            class="style15">&#160;</td><td>&#160;</td></tr><tr><td class="style12">&#160;</td><td class="style2">&#160;</td><td 
+                            class="style10"><asp:Label ID="lbldate" runat="server" CssClass="style4" 
+                            Text='<%# Bind("date") %>'></asp:Label></td><td class="style16">&#160;</td><td 
+                            class="style15">&#160;</td><td>&#160;</td></tr><tr><td class="style12">&#160;</td><td class="style2">&#160;</td><td 
+                            class="style5">&#160;</td><td class="style16">&#160;</td><td class="style15">&#160;</td><td>&#160;</td></tr><tr><td 
+                            class="style12">&#160;</td><td class="style2">&#160;</td><td class="style10"><asp:Label ID="Label1" runat="server" 
+                                CssClass="style4" Text='<%# Bind("msg") %>'></asp:Label></td><td 
+                            class="style16">&#160;</td><td class="style15">&#160;</td><td>&#160;</td></tr><tr><td 
+                            class="style12">&#160;</td><td class="style2">&#160;</td><td class="style10">
+                            <asp:DataList ID="DataList1" runat="server" DataSourceID="SqlDataSource1" 
+                                RepeatColumns="4" RepeatDirection="Horizontal">
+                                <ItemTemplate>
+                                    <asp:HyperLink ID="HyperLink1" runat="server" 
+                                        NavigateUrl='<%# Eval("attchment") %>' Text='<%# Bind("attchment") %>'></asp:HyperLink>
+                                    <br />
+                                    <br />
+                                </ItemTemplate>
+                            </asp:DataList>
+                            <asp:SqlDataSource ID="SqlDataSource1" runat="server" 
+                                ConnectionString="Data Source=.\sqlexpress;Initial Catalog=smart_mail;Integrated Security=True" 
+                                ProviderName="System.Data.SqlClient" 
+                                SelectCommand="SELECT [attchment] FROM [attach] WHERE ([m_id] = @m_id)">
+                                <SelectParameters>
+                                    <asp:ControlParameter ControlID="Label2" Name="m_id" PropertyName="Text" 
+                                        Type="Int32" />
+                                </SelectParameters>
+                            </asp:SqlDataSource>
+                            </td><td 
+                            class="style16">&#160;</td><td class="style15">&#160;</td><td>&#160;</td></tr><tr><td 
+                            class="style12">&nbsp;</td><td class="style2"><asp:LinkButton ID="LinkButton6" runat="server" CommandName="forward" 
+                                    style="color: #000099; font-weight: 700; font-size: large">Forward</asp:LinkButton></td><td 
+                            class="style10"><asp:LinkButton ID="LinkButton5" runat="server" 
+                                CommandArgument='<%# Bind("msg_id") %>' CommandName="replay" 
+                                style="font-weight: 700; font-size: large; color: #000099">Replay</asp:LinkButton></td><td 
+                            class="style16">&#160;</td><td class="style15">&#160;</td><td>&#160;</td></tr></table><br /><br /><br /></asp:Panel><asp:DropShadowExtender 
+                    ID="Panel1_DropShadowExtender" runat="server" Enabled="True" 
+                    TargetControlID="Panel1"></asp:DropShadowExtender><asp:RoundedCornersExtender 
+                    ID="Panel1_RoundedCornersExtender" runat="server" Enabled="True" Radius="10" 
+                    TargetControlID="Panel1"></asp:RoundedCornersExtender></ItemTemplate></asp:TemplateField><asp:BoundField DataField="date" /></Columns><FooterStyle BackColor="#CCCC99" ForeColor="Black" /><HeaderStyle BackColor="#333333" Font-Bold="True" ForeColor="White" /><PagerStyle BackColor="White" ForeColor="Black" HorizontalAlign="Right" /><SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" /><SortedAscendingCellStyle BackColor="#F7F7F7" /><SortedAscendingHeaderStyle BackColor="#4B4B4B" /><SortedDescendingCellStyle BackColor="#E5E5E5" /><SortedDescendingHeaderStyle BackColor="#242121" /></asp:GridView></asp:Panel><asp:RoundedCornersExtender ID="Panel_inbox_RoundedCornersExtender" 
+                        runat="server" Enabled="True" Radius="16" TargetControlID="Panel_inbox"></asp:RoundedCornersExtender><asp:Button ID="Btmark" runat="server" Text="Mark All" onclick="Btmark_Click" /><asp:RoundedCornersExtender ID="Btmark_RoundedCornersExtender" runat="server" 
+                        Enabled="True" Radius="10" TargetControlID="Btmark"></asp:RoundedCornersExtender><asp:Button ID="Button2" runat="server" Text="Unmark All" 
+                        onclick="Button2_Click" /><asp:RoundedCornersExtender ID="Button2_RoundedCornersExtender" 
+                        runat="server" Enabled="True" Radius="10" TargetControlID="Button2"></asp:RoundedCornersExtender><asp:Button ID="Button3" runat="server" Text="Delete" 
+                        onclick="Button3_Click" /><asp:RoundedCornersExtender ID="Button3_RoundedCornersExtender" 
+                        runat="server" Enabled="True" Radius="10" TargetControlID="Button3"></asp:RoundedCornersExtender><asp:Button ID="Button4" runat="server" Text="Important" /><asp:RoundedCornersExtender ID="Button4_RoundedCornersExtender" runat="server" 
+                        Enabled="True" Radius="10" TargetControlID="Button4"></asp:RoundedCornersExtender></ContentTemplate></asp:TabPanel>
+            <asp:TabPanel ID="TabPanel2" runat="server" HeaderText="TabPanel2"><HeaderTemplate>Secure Inbox</HeaderTemplate><ContentTemplate>
+                <table class="style1">
+                    <tr>
+                        <td class="style23">
+                            Enter Your Secrete Key :</td>
+                        <td class="style20">
+                            <asp:TextBox ID="txtkey" runat="server" CssClass="style21" Height="25px" 
+                                TextMode="Password" Width="205px"></asp:TextBox>
+                        </td>
+                        <td>
+                            &nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td class="style24">
+                            &nbsp;</td>
+                        <td class="style20">
+                            &nbsp;</td>
+                        <td>
+                            &nbsp;</td>
+                    </tr>
+                    <tr>
+                        <td class="style24">
+                            &nbsp;</td>
+                        <td class="style20">
+                            <asp:Button ID="Button7" runat="server" 
+                                Text="Submit" CommandName="key" onclick="Button7_Click" />
+                        </td>
+                        <td>
+                            &nbsp;</td>
+                    </tr>
+                </table>
+                <br />
+                <br />
+                <br />
+                <br />
+                <asp:Panel ID="Panelsecure" runat="server">
+                    <asp:GridView ID="gvsinbox" runat="server" AllowPaging="True" 
+                        AutoGenerateColumns="False" BackColor="#CCCCFF" BorderColor="#000066" 
+                        BorderStyle="Solid" BorderWidth="3px" CellPadding="4" ForeColor="Black" 
+                        GridLines="Horizontal" OnPageIndexChanging="gvsinbox_PageIndexChanging" 
+                        OnRowCommand="gvinbox_RowCommand" PageSize="13">
+                        <Columns>
+                            <asp:TemplateField>
+                                <ItemTemplate>
+                                    <asp:CheckBox ID="cbcheched0" runat="server" />
+                                    <asp:Label ID="lblcheck0" runat="server" Text='<%# Bind("msg_id") %>' 
+                                        Visible="False"></asp:Label>
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                            <asp:BoundField DataField="frm" />
+                            <asp:TemplateField>
+                                <ItemTemplate>
+                                    <asp:LinkButton ID="LinkButton7" runat="server" 
+                                        CommandArgument='<%# Bind("msg_id") %>' CommandName="subject" 
+                                        Text='<%# Eval("subject") %>'></asp:LinkButton>
+                                    <asp:ModalPopupExtender ID="LinkButton1_ModalPopupExtender0" runat="server" 
+                                        BackgroundCssClass="modalBackground " CancelControlID="imgclose" 
+                                        DynamicServicePath="" Enabled="True" PopupControlID="Panel1" 
+                                        TargetControlID="LinkButton7">
+                                    </asp:ModalPopupExtender>
+                                    <br />
+                                    <asp:Panel ID="Panel2" runat="server" BackColor="#CDF8F8" BorderColor="#000066" 
+                                        Height="355px" ScrollBars="Auto" Width="761px">
+                                        <table class="style1">
+                                            <tr>
+                                                <td class="style12">
+                                                    From
+                                                </td>
+                                                <td class="style2">
+                                                    :</td>
+                                                <td class="style10">
+                                                    <asp:Label ID="lblfrom0" runat="server" CssClass="style4" 
+                                                        Text='<%# Bind("frm") %>'></asp:Label>
+                                                </td>
+                                                <td class="style16">
+                                                    &nbsp;</td>
+                                                <td class="style15">
+                                                    &nbsp;</td>
+                                                <td>
+                                                    <asp:Image ID="imgclose0" runat="server" ImageUrl="~/Images/cute_ball_stop.png" 
+                                                        Width="28px" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="style12">
+                                                    Subject
+                                                </td>
+                                                <td class="style2">
+                                                    :</td>
+                                                <td class="style10">
+                                                    <asp:Label ID="lblsub0" runat="server" CssClass="style4" 
+                                                        Text='<%# Bind("subject") %>'></asp:Label>
+                                                </td>
+                                                <td class="style16">
+                                                    &nbsp;</td>
+                                                <td class="style15">
+                                                    &nbsp;</td>
+                                                <td>
+                                                    &nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="style12">
+                                                    &nbsp;</td>
+                                                <td class="style2">
+                                                    &nbsp;</td>
+                                                <td class="style10">
+                                                    <asp:Label ID="Label3" runat="server" Text='<%# Eval("msg_id") %>' 
+                                                        Visible="False"></asp:Label>
+                                                </td>
+                                                <td class="style16">
+                                                    &nbsp;</td>
+                                                <td class="style15">
+                                                    &nbsp;</td>
+                                                <td>
+                                                    &nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="style12">
+                                                    &nbsp;</td>
+                                                <td class="style2">
+                                                    &nbsp;</td>
+                                                <td class="style10">
+                                                    <asp:Label ID="lbldate0" runat="server" CssClass="style4" 
+                                                        Text='<%# Bind("date") %>'></asp:Label>
+                                                </td>
+                                                <td class="style16">
+                                                    &nbsp;</td>
+                                                <td class="style15">
+                                                    &nbsp;</td>
+                                                <td>
+                                                    &nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="style12">
+                                                    &nbsp;</td>
+                                                <td class="style2">
+                                                    &nbsp;</td>
+                                                <td class="style5">
+                                                    &nbsp;</td>
+                                                <td class="style16">
+                                                    &nbsp;</td>
+                                                <td class="style15">
+                                                    &nbsp;</td>
+                                                <td>
+                                                    &nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="style12">
+                                                    &nbsp;</td>
+                                                <td class="style2">
+                                                    &nbsp;</td>
+                                                <td class="style10">
+                                                    <asp:Label ID="Label4" runat="server" CssClass="style4" 
+                                                        Text='<%# Bind("msg") %>'></asp:Label>
+                                                </td>
+                                                <td class="style16">
+                                                    &nbsp;</td>
+                                                <td class="style15">
+                                                    &nbsp;</td>
+                                                <td>
+                                                    &nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="style12">
+                                                    &nbsp;</td>
+                                                <td class="style2">
+                                                    &nbsp;</td>
+                                                <td class="style10">
+                                                    <asp:DataList ID="DataList2" runat="server" datasourceid="SqlDataSource2" 
+                                                        RepeatColumns="4" RepeatDirection="Horizontal">
+                                                        <ItemTemplate>
+                                                            <asp:HyperLink ID="HyperLink2" runat="server" 
+                                                                NavigateUrl='<%# Eval("attchment") %>' Text='<%# Bind("attchment") %>'></asp:HyperLink>
+                                                            <br />
+                                                            <br />
+                                                        </ItemTemplate>
+                                                    </asp:DataList>
+                                                    <asp:SqlDataSource ID="SqlDataSource2" runat="server" 
+                                                        ConnectionString="Data Source=.\sqlexpress;Initial Catalog=smart_mail;Integrated Security=True" 
+                                                        ProviderName="System.Data.SqlClient" 
+                                                        SelectCommand="SELECT [attchment] FROM [attach] WHERE ([m_id] = @m_id)">
+                                                        <SelectParameters>
+                                                            <asp:ControlParameter ControlID="Label3" Name="m_id" PropertyName="Text" 
+                                                                Type="Int32" />
+                                                        </SelectParameters>
+                                                    </asp:SqlDataSource>
+                                                </td>
+                                                <td class="style16">
+                                                    &nbsp;</td>
+                                                <td class="style15">
+                                                    &nbsp;</td>
+                                                <td>
+                                                    &nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="style12">
+                                                    &nbsp;</td>
+                                                <td class="style2">
+                                                    <asp:LinkButton ID="LinkButton8" runat="server" CommandName="forward" 
+                                                        style="color: #000099; font-weight: 700; font-size: large">Forward</asp:LinkButton>
+                                                </td>
+                                                <td class="style10">
+                                                    <asp:LinkButton ID="LinkButton9" runat="server" 
+                                                        CommandArgument='<%# Bind("msg_id") %>' CommandName="replay" 
+                                                        style="font-weight: 700; font-size: large; color: #000099">Replay</asp:LinkButton>
+                                                </td>
+                                                <td class="style16">
+                                                    &nbsp;</td>
+                                                <td class="style15">
+                                                    &nbsp;</td>
+                                                <td>
+                                                    &nbsp;</td>
+                                            </tr>
+                                        </table>
+                                        <br />
+                                        <br />
+                                        <br />
+                                    </asp:Panel>
+                                    <asp:DropShadowExtender ID="Panel1_DropShadowExtender0" runat="server" 
+                                        Enabled="True" TargetControlID="Panel2">
+                                    </asp:DropShadowExtender>
+                                    <asp:RoundedCornersExtender ID="Panel1_RoundedCornersExtender0" runat="server" 
+                                        Enabled="True" Radius="10" TargetControlID="Panel2">
+                                    </asp:RoundedCornersExtender>
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                            <asp:BoundField DataField="date" />
+                        </Columns>
+                        <FooterStyle BackColor="#CCCC99" ForeColor="Black" />
+                        <HeaderStyle BackColor="#333333" Font-Bold="True" ForeColor="White" />
+                        <PagerStyle BackColor="White" ForeColor="Black" HorizontalAlign="Right" />
+                        <SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" />
+                        <SortedAscendingCellStyle BackColor="#F7F7F7" />
+                        <SortedAscendingHeaderStyle BackColor="#4B4B4B" />
+                        <SortedDescendingCellStyle BackColor="#E5E5E5" />
+                        <SortedDescendingHeaderStyle BackColor="#242121" />
+                    </asp:GridView>
+                    <br />
+                    <asp:Button ID="Button1" runat="server" OnClick="Button1_Click" 
+                        Text="Mark All" />
+                    &nbsp;<asp:RoundedCornersExtender ID="Button1_RoundedCornersExtender" runat="server" 
+                        Enabled="True" Radius="10" TargetControlID="Button1">
+                    </asp:RoundedCornersExtender>
+                    <asp:Button ID="Button5" runat="server" OnClick="Button5_Click" 
+                        Text="Unmark All" />
+                    &nbsp;<asp:RoundedCornersExtender ID="Button5_RoundedCornersExtender" runat="server" 
+                        Enabled="True" Radius="10" TargetControlID="Button5">
+                    </asp:RoundedCornersExtender>
+                    <asp:Button ID="Button6" runat="server" OnClick="Button6_Click" Text="Delete" />
+                    <asp:RoundedCornersExtender ID="Button6_RoundedCornersExtender" runat="server" 
+                        Enabled="True" Radius="10" TargetControlID="Button6">
+                    </asp:RoundedCornersExtender>
+                </asp:Panel>
+                </ContentTemplate></asp:TabPanel>
+            <asp:TabPanel ID="TabPanel3" runat="server" HeaderText="TabPanel3"><HeaderTemplate>Group Inbox</HeaderTemplate><ContentTemplate><asp:GridView ID="gvginbox" runat="server" AutoGenerateColumns="False" 
+                        CellPadding="4" ForeColor="Black" GridLines="Horizontal" 
+                        AllowPaging="True" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" 
+                        BorderWidth="1px" onpageindexchanging="gvginbox_PageIndexChanging" 
+                        PageSize="12"><Columns><asp:TemplateField><ItemTemplate><asp:CheckBox ID="checked" runat="server" /></ItemTemplate></asp:TemplateField><asp:BoundField HeaderText="From" /><asp:BoundField HeaderText="Subject" /><asp:BoundField HeaderText="Date-Time" /></Columns><EmptyDataTemplate><asp:CheckBox ID="CheckBox3" runat="server" /></EmptyDataTemplate><FooterStyle BackColor="#CCCC99" ForeColor="Black" /><HeaderStyle BackColor="#333333" Font-Bold="True" ForeColor="White" /><PagerStyle BackColor="White" ForeColor="Black" HorizontalAlign="Right" /><SelectedRowStyle BackColor="#CC3333" Font-Bold="True" ForeColor="White" /><SortedAscendingCellStyle BackColor="#F7F7F7" /><SortedAscendingHeaderStyle BackColor="#4B4B4B" /><SortedDescendingCellStyle BackColor="#E5E5E5" /><SortedDescendingHeaderStyle BackColor="#242121" /></asp:GridView><asp:Button ID="btmark6" runat="server" Text="Mark All" 
+                        onclick="btmark6_Click" /><asp:RoundedCornersExtender ID="btmark6_RoundedCornersExtender" runat="server" 
+                        Enabled="True" Radius="10" TargetControlID="btmark6"></asp:RoundedCornersExtender><asp:Button ID="btunmark" runat="server" Text="Unmark All" 
+                        onclick="btunmark_Click" /><asp:RoundedCornersExtender ID="btunmark_RoundedCornersExtender" runat="server" 
+                        Enabled="True" Radius="10" TargetControlID="btunmark"></asp:RoundedCornersExtender><asp:Button ID="btdelete" runat="server" Text="Delete" /><asp:RoundedCornersExtender ID="btdelete_RoundedCornersExtender" runat="server" 
+                        Enabled="True" Radius="10" TargetControlID="btdelete"></asp:RoundedCornersExtender></ContentTemplate></asp:TabPanel>
+        </asp:TabContainer>
+      
+
+
+    </asp:Panel>
+   
+
+
+</div>
+
+</asp:Content>
+
